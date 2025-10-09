@@ -2,8 +2,9 @@
 
 ## Серверная часть приложения, построенная с помощью микросервисной архитектуры
 
-### Схематичная архитектура системы
-<img width="990" height="450" alt="image" src="https://github.com/user-attachments/assets/da8ee20f-accf-4bcf-b43c-6242f08603f8" />
+### Схематичная визуализация архитектура системы
+<img width="1169" height="489" alt="image" src="https://github.com/user-attachments/assets/1cb1b235-7cbb-4208-87f3-b0ba75368625" />
+
 
 
 ### Схема отношения сущностей в базе данных

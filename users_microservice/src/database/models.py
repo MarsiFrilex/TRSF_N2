@@ -11,7 +11,6 @@ class Users(Base):
     user_name = Column(String, nullable=False)
     email = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
-    role_id = Column(Integer, ForeignKey('roles.id'))
     created_at = Column(BigInteger, default=int(time.time()), nullable=False)
     updated_at = Column(BigInteger, default=int(time.time()), onupdate=int(time.time()), nullable=False)
 

@@ -1,26 +1,40 @@
 from fastapi import APIRouter, Depends
 
+from src.api.dependencies import get_auth_service, get_current_user
+from src.schemas.auth_schemas import RefreshTokenSchema, LoginUserSchema
+from src.schemas.user_schemas import CreateUserSchema
+from src.services.auth_service import AuthService
+
 router = APIRouter(
     prefix="/auth",
     tags=["Auth"]
 )
 
 
-@router.post("/register")
-async def register_user():
-    pass
+@router.post("/register-user")
+async def register_user(
+        user: CreateUserSchema,
+        auth_service: AuthService = Depends(get_auth_service)
+):
+    return await auth_service.register(user)
 
 
-@router.post("/login")
-async def login_user():
-    pass
+@router.post("/login-user")
+async def login_user(
+        user: LoginUserSchema,
+        auth_service: AuthService = Depends(get_auth_service)
+):
+    return await auth_service.login(user.email, user.password)
 
 
-@router.post("/refresh")
-async def refresh_token():
-    pass
+@router.post("/refresh-token")
+async def refresh_token(
+        token: RefreshTokenSchema,
+        auth_service: AuthService = Depends(get_auth_service)
+):
+    return await auth_service.refresh_token(token.token)
 
 
-@router.get("/me")
-async def get_current_user():
-    pass
+@router.get("/current-user")
+async def get_current_user(user = Depends(get_current_user)):
+    return user

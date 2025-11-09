@@ -2,7 +2,9 @@ from sqlalchemy import select, insert, update, delete
 
 from src.database.connection import async_session_maker
 from src.database.models import Orders
-from src.schemas.orders_schemas import OrderCreateSchema, OrderUpdateSchema
+
+from src.database.models import OrdersItems
+from src.schemas.orders_schemas import OrderCreateSchema, OrderUpdateSchema, OrderItemSchema, FullOrderSchema
 
 
 class OrdersRepository:
@@ -34,8 +36,27 @@ class OrdersRepository:
                 select(Orders)
                 .where(Orders.id == order_id)
             )
+            order = result.scalar_one_or_none()
+            items_res = await session.execute(
+                select(OrdersItems)
+                .where(OrdersItems.order_id == order_id)
+            )
+            order_items = [
+                OrderItemSchema(
+                    item_id=item.item_id,
+                    count=item.count
+                ) for item in items_res.scalars().all()
+            ]
             await session.commit()
-            return result.scalar_one_or_none()
+            full_order = FullOrderSchema(
+                id=order.id,
+                user_id=order.user_id,
+                status_id=order.status_id,
+                created_at=order.created_at,
+                updated_at=order.updated_at,
+                items=order_items
+            )
+            return full_order
 
     @staticmethod
     async def update_order(order_id: int, new_order: OrderUpdateSchema):

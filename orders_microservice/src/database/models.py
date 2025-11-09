@@ -16,7 +16,7 @@ class Orders(Base):
 
 class OrdersItems(Base):
     __tablename__ = 'orders_items'
-    order_id = Column(Integer, ForeignKey('orders.id'), primary_key=True)
+    order_id = Column(Integer, ForeignKey('orders.id', ondelete="CASCADE"), primary_key=True)
     item_id = Column(Integer, ForeignKey('items.id'), primary_key=True)
     count = Column(Integer, nullable=False)
 

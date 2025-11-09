@@ -31,8 +31,8 @@ class OrdersProxyService:
     async def get_order_items(self, order_id: int, headers: Headers, cookies: dict):
         return await self.api_client.get(f"/api/v1/order-items/{order_id}", headers=headers, cookies=cookies)
 
-    async def remove_item_from_order(self, order_id: int, headers: Headers, cookies: dict):
-        return await self.api_client.delete(f"/api/v1/order-items/{order_id}", headers=headers, cookies=cookies)
+    async def remove_item_from_order(self, order_id: int, item: RemoveItemSchema, headers: Headers, cookies: dict):
+        return await self.api_client.delete(f"/api/v1/order-items/{order_id}", json_payload=item, headers=headers, cookies=cookies)
 
     # Items endpoints
     async def get_items(self, headers: Headers, cookies: dict):

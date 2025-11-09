@@ -6,7 +6,7 @@ from src.schemas.users_schemas import *
 
 class UsersProxyService:
     def __init__(self):
-        self.api_client = HTTPClient("http://users_microservice:8001")
+        self.api_client = HTTPClient("http://users_microservice:8000")
 
     # Auth endpoints
     async def register_user(self, user: CreateUserSchema, headers: Headers, cookies: dict):

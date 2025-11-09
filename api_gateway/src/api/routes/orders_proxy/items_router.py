@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, Request
 
 from src.api.base_responses import SuccessResponse
-from src.api.dependencies import get_orders_proxy_service
+from src.api.dependencies import get_orders_proxy_service, current_user_dependency
 from src.schemas.orders_schemas import CreateItemSchema
 from src.services.orders_proxy_service import OrdersProxyService
 
 router = APIRouter(
     prefix="/items",
-    tags=["items"]
+    tags=["items"],
+    dependencies=[Depends(current_user_dependency)],
 )
 
 

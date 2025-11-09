@@ -6,7 +6,7 @@ from src.schemas.orders_schemas import *
 
 class OrdersProxyService:
     def __init__(self):
-        self.api_client = HTTPClient("http://orders_microservice:8002")
+        self.api_client = HTTPClient("http://orders_microservice:8000")
 
     # Orders endpoints
     async def get_orders(self, headers: Headers, cookies: dict):

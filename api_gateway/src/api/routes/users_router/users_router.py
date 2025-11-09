@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, Request
 
 from src.api.base_responses import SuccessResponse
-from src.api.dependencies import get_users_proxy_service
+from src.api.dependencies import get_users_proxy_service, current_user_dependency
 from src.schemas.users_schemas import UpdateUserSchema
 from src.services.users_proxy_service import UsersProxyService
 
 router = APIRouter(
     prefix="/users",
-    tags=["users"]
+    tags=["users"],
+    dependencies=[Depends(current_user_dependency)],
 )
 
 

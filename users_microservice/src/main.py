@@ -1,7 +1,6 @@
 import uvicorn
 
 from fastapi import FastAPI, HTTPException
-from src.database.connection import create_tables
 from starlette.responses import RedirectResponse
 
 from src.api.base_router import base_router
@@ -20,5 +19,4 @@ async def root():
 
 
 if __name__ == "__main__":
-    # asyncio.run(create_tables())
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

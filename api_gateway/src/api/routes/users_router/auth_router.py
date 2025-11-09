@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request
 
 from src.api.base_responses import SuccessResponse
-from src.api.dependencies import get_users_proxy_service
+from src.api.dependencies import get_users_proxy_service, current_user_dependency
 from src.schemas.users_schemas import CreateUserSchema, LoginUserSchema, RefreshTokenSchema
 from src.services.users_proxy_service import UsersProxyService
 
@@ -43,8 +43,6 @@ async def refresh_token(
 
 @router.get("/current-user")
 async def current_user(
-        request: Request,
-        proxy_service: UsersProxyService = Depends(get_users_proxy_service),
+        user = Depends(current_user_dependency),
 ):
-    result = await proxy_service.get_current_user(request.headers, request.cookies)
-    return SuccessResponse(data=result)
+    return SuccessResponse(data=user)

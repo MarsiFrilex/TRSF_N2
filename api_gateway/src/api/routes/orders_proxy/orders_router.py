@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends, Request
 
 from src.api.base_responses import SuccessResponse
-from src.api.dependencies import get_orders_proxy_service
+from src.api.dependencies import get_orders_proxy_service, current_user_dependency
 from src.schemas.orders_schemas import OrderCreateSchema, OrderUpdateSchema
 from src.services.orders_proxy_service import OrdersProxyService
 
 router = APIRouter(
     prefix="/orders",
-    tags=["orders"]
+    tags=["orders"],
+    dependencies=[Depends(current_user_dependency)],
 )
 
 
@@ -18,6 +19,7 @@ async def create_order(
         proxy_service: OrdersProxyService = Depends(get_orders_proxy_service),
 ):
     result = await proxy_service.create_order(new_order, request.headers, request.cookies)
+    return SuccessResponse(data=result)
 
 
 @router.get("")
@@ -26,6 +28,7 @@ async def get_orders(
         proxy_service: OrdersProxyService = Depends(get_orders_proxy_service),
 ):
     result = await proxy_service.get_orders(request.headers, request.cookies)
+    return SuccessResponse(data=result)
 
 
 @router.get("/{order_id}")

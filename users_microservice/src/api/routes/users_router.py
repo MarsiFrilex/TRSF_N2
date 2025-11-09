@@ -42,6 +42,5 @@ async def update_user_roles(
         roles_ids: list[int] | None,
         users_service: UsersService = Depends(get_users_service)
 ):
-    if result := await users_service.update_roles(user_id, roles_ids):
-        return result
-    raise HTTPException(status_code=404, detail="User or roles not found")
+    await users_service.update_roles(user_id, roles_ids)
+    return {"message": "updated"}

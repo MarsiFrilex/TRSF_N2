@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
 from fastapi import HTTPException, status
-
 from src.repositories.auth_repository import AuthRepository
 from src.repositories.users_repository import UsersRepository
 from src.schemas.user_schemas import InsertUserSchema, CreateUserSchema

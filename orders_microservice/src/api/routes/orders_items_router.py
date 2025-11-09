@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-
-from src.api.dependencies import get_orders_service
 from src.schemas.orders_items_schemas import RemoveItemSchema, AddItemSchema
 from src.services.orders_service import OrdersService
+
+from src.api.dependencies import get_orders_service
 
 router = APIRouter(
     prefix="/order-items",

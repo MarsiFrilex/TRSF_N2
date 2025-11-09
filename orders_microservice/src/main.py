@@ -1,15 +1,17 @@
-import asyncio
-
 import uvicorn
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
-
 from src.database.connection import delete_tables, create_tables
+
+from src.api.app_exceptions import app_exception_handler
 from src.api.base_router import base_router
 
 app = FastAPI()
 app.include_router(base_router)
+
+app.add_exception_handler(Exception, app_exception_handler)
+app.add_exception_handler(HTTPException, app_exception_handler)
 
 
 @app.get("/")

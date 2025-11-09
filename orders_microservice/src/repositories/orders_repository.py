@@ -1,9 +1,8 @@
 from sqlalchemy import select, insert, update, delete
-
 from src.database.connection import async_session_maker
 from src.database.models import Orders
-
 from src.database.models import OrdersItems
+
 from src.schemas.orders_schemas import OrderCreateSchema, OrderUpdateSchema, OrderItemSchema, FullOrderSchema
 
 

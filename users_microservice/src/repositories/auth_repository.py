@@ -2,9 +2,8 @@ from datetime import datetime, timedelta, timezone
 
 from fastapi import HTTPException
 from jose import JWTError, jwt
-
-from src.utils.passwords import get_password_hash, verify_password
 from src.config import config
+from src.utils.passwords import get_password_hash, verify_password
 
 
 class AuthRepository:

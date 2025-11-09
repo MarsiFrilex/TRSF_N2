@@ -1,7 +1,6 @@
 import time
 
 from sqlalchemy import Column, Integer, String, BigInteger, ForeignKey
-
 from src.database.connection import Base
 
 

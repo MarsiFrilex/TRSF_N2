@@ -18,7 +18,7 @@ class OrdersProxyService:
     async def get_order(self, order_id: int, headers: Headers, cookies: dict):
         return await self.api_client.get(f"/api/v1/orders/{order_id}", headers=headers, cookies=cookies)
 
-    async def update_order(self, order_id: int, order_data: dict, headers: Headers, cookies: dict):
+    async def update_order(self, order_id: int, order_data: OrderUpdateSchema, headers: Headers, cookies: dict):
         return await self.api_client.patch(f"/api/v1/orders/{order_id}", json_payload=order_data, headers=headers, cookies=cookies)
 
     async def delete_order(self, order_id: int, headers: Headers, cookies: dict):

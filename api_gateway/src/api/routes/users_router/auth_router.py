@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 
+from src.api.base_responses import SuccessResponse
 from src.api.dependencies import get_users_proxy_service
 from src.schemas.users_schemas import CreateUserSchema, LoginUserSchema, RefreshTokenSchema
 from src.services.users_proxy_service import UsersProxyService
@@ -16,7 +17,8 @@ async def register_user(
         user: CreateUserSchema,
         proxy_service: UsersProxyService = Depends(get_users_proxy_service),
 ):
-    return await proxy_service.register_user(user, request.headers, request.cookies)
+    result = await proxy_service.register_user(user, request.headers, request.cookies)
+    return SuccessResponse(data=result)
 
 
 @router.post("/login-user")
@@ -25,7 +27,8 @@ async def login_user(
         user: LoginUserSchema,
         proxy_service: UsersProxyService = Depends(get_users_proxy_service),
 ):
-    return await proxy_service.login_user(user, request.headers, request.cookies)
+    result = await proxy_service.login_user(user, request.headers, request.cookies)
+    return SuccessResponse(data=result)
 
 
 @router.post("/refresh-token")
@@ -34,7 +37,8 @@ async def refresh_token(
         token: RefreshTokenSchema,
         proxy_service: UsersProxyService = Depends(get_users_proxy_service),
 ):
-    return await proxy_service.refresh_token(token, request.headers, request.cookies)
+    result = await proxy_service.refresh_token(token, request.headers, request.cookies)
+    return SuccessResponse(data=result)
 
 
 @router.get("/current-user")
@@ -42,4 +46,5 @@ async def current_user(
         request: Request,
         proxy_service: UsersProxyService = Depends(get_users_proxy_service),
 ):
-    return await proxy_service.get_current_user(request.headers, request.cookies)
+    result = await proxy_service.get_current_user(request.headers, request.cookies)
+    return SuccessResponse(data=result)

@@ -1,7 +1,7 @@
 import httpx
-
-from starlette.datastructures import Headers
+from fastapi import HTTPException
 from pydantic import BaseModel
+from starlette.datastructures import Headers
 
 
 class HTTPClient:
@@ -55,14 +55,22 @@ class HTTPClient:
                 request_args["files"] = files
 
             response = await self.client.request(**request_args)
-            response.raise_for_status()
+
+            json_response = response.json()
+            print(json_response)
+
+            if isinstance(json_response, dict) and not json_response.get("success", True):
+                print(1)
+                raise HTTPException(status_code=response.status_code, detail=json_response.get("message", ""))
             return response
-        except httpx.RequestError as exc:
-            print(f"Ошибка при запросе {exc.request.url!r}: {exc}")
-            raise exc
-        except httpx.HTTPStatusError as exc:
-            print(f"HTTP статус {exc.response.status_code} для запроса {exc.request.url!r}")
-            return exc.response
+        except HTTPException:
+            raise
+        # except httpx.RequestError as exc:
+        #     print(f"Ошибка при запросе {exc.request.url!r}: {exc}")
+        #     raise exc
+        # except httpx.HTTPStatusError as exc:
+        #     print(f"HTTP статус {exc.response.status_code} для запроса {exc.request.url!r}")
+        #     return exc.response
 
     async def get(self, endpoint: str, *, params=None, json_payload: dict | list | BaseModel = None, body: dict | list = None, files=None, headers: dict | Headers = None, cookies: dict = None):
         response = await self.__request("GET", endpoint, params=params, json_payload=json_payload, body=body, files=files, headers=headers, cookies=cookies)

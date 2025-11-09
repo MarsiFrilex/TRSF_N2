@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from src.api.routes.users_router import users_proxy_router
 from src.api.routes.orders_proxy import orders_proxy_router
+from src.api.routes.users_router import users_proxy_router
 
 base_router = APIRouter(prefix="/api/v1")
 

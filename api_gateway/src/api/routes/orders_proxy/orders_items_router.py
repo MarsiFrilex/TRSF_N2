@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 
+from src.api.base_responses import SuccessResponse
 from src.api.dependencies import get_orders_proxy_service
 from src.schemas.orders_schemas import AddItemSchema, RemoveItemSchema
 from src.services.orders_proxy_service import OrdersProxyService
@@ -16,7 +17,8 @@ async def add_item_to_order(
         item: AddItemSchema,
         proxy_service: OrdersProxyService = Depends(get_orders_proxy_service),
 ):
-    return await proxy_service.add_item_to_order(item, request.headers, request.cookies)
+    result = await proxy_service.add_item_to_order(item, request.headers, request.cookies)
+    return SuccessResponse(data=result)
 
 
 @router.get("/{order_id}")
@@ -25,7 +27,8 @@ async def get_order_items(
         order_id: int,
         proxy_service: OrdersProxyService = Depends(get_orders_proxy_service),
 ):
-    return await proxy_service.get_order_items(order_id, request.headers, request.cookies)
+    result = await proxy_service.get_order_items(order_id, request.headers, request.cookies)
+    return SuccessResponse(data=result)
 
 
 @router.delete("/{order_id}")
@@ -35,4 +38,5 @@ async def remove_item_from_order(
         item: RemoveItemSchema,
         proxy_service: OrdersProxyService = Depends(get_orders_proxy_service),
 ):
-    return await proxy_service.remove_item_from_order(order_id, item, request.headers, request.cookies)
+    result = await proxy_service.remove_item_from_order(order_id, item, request.headers, request.cookies)
+    return SuccessResponse(data=result)

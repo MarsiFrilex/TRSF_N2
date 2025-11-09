@@ -1,8 +1,7 @@
 from sqlalchemy import insert, select, update, delete
-
-from src.schemas.user_schemas import InsertUserSchema, UpdateUserSchema, FullUserSchema, RoleSchema
 from src.database.connection import async_session_maker
 from src.database.models import Users, Roles, UserRoles
+from src.schemas.user_schemas import InsertUserSchema, UpdateUserSchema, FullUserSchema, RoleSchema
 
 
 class UsersRepository:

@@ -1,13 +1,14 @@
 from starlette.datastructures import Headers
 
 from src.http_client.http_client import HTTPClient
-from src.schemas.users_schemas import CreateUserSchema, LoginUserSchema, RefreshTokenSchema, UpdateUserSchema
+from src.schemas.users_schemas import *
 
 
 class UsersProxyService:
     def __init__(self):
         self.api_client = HTTPClient("http://users_microservice:8001")
 
+    # Auth endpoints
     async def register_user(self, user: CreateUserSchema, headers: Headers, cookies: dict):
         return await self.api_client.post(f"/api/v1/auth/register-user", json_payload=user, headers=headers, cookies=cookies)
 
@@ -20,6 +21,7 @@ class UsersProxyService:
     async def get_current_user(self, headers: Headers, cookies: dict):
         return await self.api_client.get(f"/api/v1/auth/current-user", headers=headers, cookies=cookies)
 
+    # Users endpoints
     async def get_users_list(self, headers: Headers, cookies: dict):
         return await self.api_client.get(f"/api/v1/users", headers=headers, cookies=cookies)
 

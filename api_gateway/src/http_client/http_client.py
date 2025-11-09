@@ -13,15 +13,16 @@ class HTTPClient:
         )
 
     async def __request(
-        self,
-        method: str,
-        endpoint: str,
-        *,
-        params: dict = None,
-        json_payload: dict | BaseModel = None,
-        files=None,
-        headers: dict | Headers = None,
-        cookies: dict = None
+            self,
+            method: str,
+            endpoint: str,
+            *,
+            params: dict = None,
+            json_payload: dict | list | BaseModel = None,
+            body: dict | list = None,
+            files=None,
+            headers: dict | Headers = None,
+            cookies: dict = None
     ):
         try:
             proxy_headers = {str(k).lower(): v for k, v in dict(headers).items()}
@@ -34,7 +35,7 @@ class HTTPClient:
             if json_payload is not None:
                 if hasattr(json_payload, "model_dump"):
                     json_data = json_payload.model_dump()
-                elif isinstance(json_payload, dict):
+                elif isinstance(json_payload, dict) or isinstance(json_payload, list):
                     json_data = json_payload
                 else:
                     raise ValueError("json_payload должен быть dict или Pydantic-моделью")
@@ -48,6 +49,8 @@ class HTTPClient:
             }
             if json_data is not None:
                 request_args["json"] = json_data
+            if body is not None:
+                request_args["data"] = body
             if files is not None:
                 request_args["files"] = files
 
@@ -61,22 +64,22 @@ class HTTPClient:
             print(f"HTTP статус {exc.response.status_code} для запроса {exc.request.url!r}")
             return exc.response
 
-    async def get(self, endpoint: str, *, params=None, json_payload: dict | BaseModel = None, files=None, headers: dict | Headers = None, cookies: dict = None):
-        response = await self.__request("GET", endpoint, params=params, json_payload=json_payload, files=files, headers=headers, cookies=cookies)
+    async def get(self, endpoint: str, *, params=None, json_payload: dict | list | BaseModel = None, body: dict | list = None, files=None, headers: dict | Headers = None, cookies: dict = None):
+        response = await self.__request("GET", endpoint, params=params, json_payload=json_payload, body=body, files=files, headers=headers, cookies=cookies)
         return response.json()
 
-    async def post(self, endpoint: str, *, params=None, json_payload: dict | BaseModel = None, files=None, headers: dict | Headers = None, cookies: dict = None):
-        response = await self.__request("POST", endpoint, params=params, json_payload=json_payload, files=files, headers=headers, cookies=cookies)
+    async def post(self, endpoint: str, *, params=None, json_payload: dict | list | BaseModel = None, body: dict | list = None, files=None, headers: dict | Headers = None, cookies: dict = None):
+        response = await self.__request("POST", endpoint, params=params, json_payload=json_payload, body=body, files=files, headers=headers, cookies=cookies)
         return response.json()
 
-    async def put(self, endpoint: str, *, params=None, json_payload: dict | BaseModel = None, files=None, headers: dict | Headers = None, cookies: dict = None):
-        response = await self.__request("PUT", endpoint, params=params, json_payload=json_payload, files=files, headers=headers, cookies=cookies)
+    async def put(self, endpoint: str, *, params=None, json_payload: dict | list | BaseModel = None, body: dict | list = None, files=None, headers: dict | Headers = None, cookies: dict = None):
+        response = await self.__request("PUT", endpoint, params=params, json_payload=json_payload, body=body, files=files, headers=headers, cookies=cookies)
         return response.json()
 
-    async def patch(self, endpoint: str, *, params=None, json_payload: dict | BaseModel = None, files=None, headers: dict | Headers = None, cookies: dict = None):
-        response = await self.__request("PATCH", endpoint, params=params, json_payload=json_payload, files=files, headers=headers, cookies=cookies)
+    async def patch(self, endpoint: str, *, params=None, json_payload: dict | list | BaseModel = None, body: dict | list = None, files=None, headers: dict | Headers = None, cookies: dict = None):
+        response = await self.__request("PATCH", endpoint, params=params, json_payload=json_payload, body=body, files=files, headers=headers, cookies=cookies)
         return response.json()
 
-    async def delete(self, endpoint: str, *, params=None, json_payload: dict | BaseModel = None, files=None, headers: dict | Headers = None, cookies: dict = None):
-        response = await self.__request("DELETE", endpoint, params=params, json_payload=json_payload, files=files, headers=headers, cookies=cookies)
+    async def delete(self, endpoint: str, *, params=None, json_payload: dict | list | BaseModel = None, body: dict | list = None, files=None, headers: dict | Headers = None, cookies: dict = None):
+        response = await self.__request("DELETE", endpoint, params=params, json_payload=json_payload, body=body, files=files, headers=headers, cookies=cookies)
         return response.json()
